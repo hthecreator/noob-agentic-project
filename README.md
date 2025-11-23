@@ -7,11 +7,12 @@ An intelligent code review agent powered by AI that automatically analyzes pull 
 - 🤖 Automated code review using AI models (OpenAI, DeepSeek, Anthropic)
 - 📊 Web dashboard for viewing review results
 - 🔍 Pattern detection for common code issues
-- 💬 Natural language explanations of problems
+- 💬 Natural language explanations of problems via AI
 - ⚡ Fast parallel processing of multiple files
 - 🔌 Extensible plugin system for custom rules
-- 📈 Review history tracking and trend analysis
+- 📈 Review history tracking and trend analysis with flexible search
 - 🛠️ Auto-fix functionality for common issues
+- 📤 Export individual reviews to files for sharing
 
 ## Installation
 
@@ -38,6 +39,8 @@ MODEL_PROVIDER=DeepSeek
 DEFAULT_MODEL=text-davinci-003
 OUTPUT_DIR=./reports
 ```
+
+**Note:** When using OpenAI as a provider, the tool will make direct API calls to get code review suggestions. Make sure your API key is properly configured.
 
 See `.env.example` for all available options.
 

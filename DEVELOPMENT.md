@@ -58,8 +58,28 @@ Plugins extend functionality by providing hook functions. The plugin manager loa
 
 Reviews are stored in SQLite for history tracking and trend analysis. The database supports:
 - Querying reviews by file pattern
+- Flexible searching by user criteria
+- Exporting individual reviews to files
 - Exporting review history
 - Cleanup of old reviews
+
+#### Database Search
+
+The database supports flexible searching by user criteria:
+
+```python
+from database import ReviewDatabase
+
+db = ReviewDatabase()
+
+# Search by filename or model
+results = db.search_reviews_by_user("agent.py")
+
+# Export specific reviews
+file_path, cmd = db.export_review_to_file(review_id=1, output_path="review_export.json")
+```
+
+The search functionality allows dynamic querying to find reviews quickly based on various criteria.
 
 ## Configuration
 
