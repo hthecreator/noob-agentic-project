@@ -5,9 +5,9 @@ import os
 import sys
 from pathlib import Path
 from typing import Dict, Any, Optional
-from agent import CodeReviewAgent, run_code_analysis_pipeline
-from reviewer import CodeReviewer, SmartRefactorer
-from report_generator import ReportGenerator, create_summary_report
+from src.agent import CodeReviewAgent, run_code_analysis_pipeline
+from src.reviewer import CodeReviewer, SmartRefactorer
+from src.report_generator import ReportGenerator, create_summary_report
 
 
 class CodeReviewService:

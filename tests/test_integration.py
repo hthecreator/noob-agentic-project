@@ -5,7 +5,7 @@ import unittest
 import tempfile
 import shutil
 from pathlib import Path
-from main import CodeReviewService
+from src.main import CodeReviewService
 
 
 class TestIntegration(unittest.TestCase):

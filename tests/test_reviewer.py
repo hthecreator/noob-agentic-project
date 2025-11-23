@@ -5,8 +5,8 @@ Unit tests for the code reviewer.
 import unittest
 from pathlib import Path
 
-from agent import CodeReviewAgent, run_code_analysis_pipeline
-from reviewer import CodeReviewer, SmartRefactorer
+from src.agent import CodeReviewAgent, run_code_analysis_pipeline
+from src.reviewer import CodeReviewer, SmartRefactorer
 
 
 class TestCodeReviewAgent(unittest.TestCase):
