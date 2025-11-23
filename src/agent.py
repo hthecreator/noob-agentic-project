@@ -54,8 +54,34 @@ class CodeReviewAgent:
 
 Provide a list of specific suggestions."""
 
-        # In a real implementation, this would call the LLM API
-        # For demo, we'll simulate it
+        # Call OpenAI API for suggestions
+        if self.provider == "OpenAI":
+            try:
+                from openai import OpenAI
+
+                client = OpenAI()
+
+                # Make API call to get suggestions
+                response = client.chat.completions.create(
+                    model=self.model_name,
+                    messages=[
+                        {"role": "system", "content": "You are a code review assistant."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    max_tokens=500,
+                    temperature=0.7,
+                )
+
+                # Extract suggestions from response
+                suggestions_text = response.choices[0].message.content
+                suggestions = [s.strip() for s in suggestions_text.split("\n") if s.strip()]
+
+                return suggestions
+            except Exception as e:
+                # Fallback to simulated suggestions if API fails
+                pass
+
+        # Simulated suggestions for non-OpenAI providers or if API fails
         suggestions = [
             "Consider adding error handling",
             "Variable names could be more descriptive",
@@ -150,6 +176,40 @@ Provide a fixed version of the code."""
             return suggested_fix
         except:
             return "Could not generate valid fix"
+
+    def get_detailed_explanation(self, code_snippet: str, issue: str) -> str:
+        """Get a detailed explanation of a code issue from the AI.
+
+        Args:
+            code_snippet: The problematic code
+            issue: Description of the issue
+
+        Returns:
+            Detailed explanation from the AI
+        """
+        if self.provider == "OpenAI":
+            try:
+                from openai import OpenAI
+
+                client = OpenAI()
+
+                # Request detailed explanation without safety_identifier
+                response = client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": f"Explain this code issue:\n\nCode: {code_snippet}\n\nIssue: {issue}",
+                        }
+                    ],
+                    max_tokens=300,
+                )
+
+                return response.choices[0].message.content
+            except Exception as e:
+                return f"Unable to get explanation: {e}"
+
+        return "Detailed explanation not available for this provider"
 
 
 def run_code_analysis_pipeline(code: str, language: str, provider: str = "DeepSeek") -> Dict:

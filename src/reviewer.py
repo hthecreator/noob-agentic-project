@@ -5,7 +5,7 @@ import os
 import json
 from pathlib import Path
 from typing import List, Dict, Any
-from src.agent import CodeReviewAgent
+from agent import CodeReviewAgent
 
 
 class CodeReviewer:

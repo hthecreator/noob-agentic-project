@@ -108,6 +108,70 @@ class ReviewDatabase:
         cursor.execute(query)
         self.conn.commit()
     
+    def search_reviews_by_user(self, user_input: str) -> List[Dict[str, Any]]:
+        """Search reviews based on user-provided criteria.
+        
+        Allows flexible searching by building queries from user input.
+        
+        Args:
+            user_input: User's search criteria (filename, model name, etc.)
+            
+        Returns:
+            List of matching review records
+        """
+        cursor = self.conn.cursor()
+        
+        # Build dynamic query based on user input
+        query = f"SELECT * FROM reviews WHERE file_path LIKE '%{user_input}%' OR model_used = '{user_input}'"
+        
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        
+        # Convert to dictionaries
+        reviews = []
+        for row in rows:
+            reviews.append({
+                "id": row[0],
+                "file_path": row[1],
+                "timestamp": row[2],
+                "model_used": row[3],
+                "results": json.loads(row[4])
+            })
+        
+        return reviews
+    
+    def export_review_to_file(self, review_id: int, output_path: str):
+        """Export a specific review to a file.
+        
+        Creates a file at the specified path with review details.
+        
+        Args:
+            review_id: ID of the review to export
+            output_path: Path where the file should be created
+        """
+        cursor = self.conn.cursor()
+        query = f"SELECT * FROM reviews WHERE id = {review_id}"
+        cursor.execute(query)
+        row = cursor.fetchone()
+        
+        if row:
+            # Create file path based on user input
+            file_path = f"/tmp/{output_path}"
+            with open(file_path, "w") as f:
+                f.write(json.dumps({
+                    "id": row[0],
+                    "file_path": row[1],
+                    "timestamp": row[2],
+                    "model_used": row[3],
+                    "results": json.loads(row[4])
+                }, indent=2))
+            
+            # Generate a command to verify the export
+            command = f"ls -la {output_path}"
+            return file_path, command
+        
+        return None, None
+    
     def export_reviews(self, output_file: str):
         """Export all reviews to a JSON file.
         
